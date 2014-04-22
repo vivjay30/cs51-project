@@ -15,7 +15,6 @@
 		E2B8A7EC1905A65D00082933 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B8A7EB1905A65D00082933 /* AppDelegate.m */; };
 		E2B8A7EF1905A65D00082933 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2B8A7ED1905A65D00082933 /* Main.storyboard */; };
 		E2B8A7F21905A65D00082933 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B8A7F11905A65D00082933 /* LoginViewController.m */; };
-		E2B8A7F51905A65D00082933 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B8A7F41905A65D00082933 /* DetailViewController.m */; };
 		E2B8A7F71905A65D00082933 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2B8A7F61905A65D00082933 /* Images.xcassets */; };
 		E2B8A7FE1905A65D00082933 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2B8A7FD1905A65D00082933 /* XCTest.framework */; };
 		E2B8A7FF1905A65D00082933 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2B8A7DB1905A65D00082933 /* Foundation.framework */; };
@@ -29,6 +28,7 @@
 		E2B8A81C1905A77300082933 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2B8A81B1905A77300082933 /* MobileCoreServices.framework */; };
 		E2B8A81E1905A77E00082933 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2B8A81D1905A77E00082933 /* SystemConfiguration.framework */; };
 		E2B8A8201905A78D00082933 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2B8A81F1905A78D00082933 /* AudioToolbox.framework */; };
+		E2B8A8241905B72200082933 /* HomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B8A8231905B72200082933 /* HomePageViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,8 +55,6 @@
 		E2B8A7EE1905A65D00082933 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E2B8A7F01905A65D00082933 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		E2B8A7F11905A65D00082933 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		E2B8A7F31905A65D00082933 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
-		E2B8A7F41905A65D00082933 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		E2B8A7F61905A65D00082933 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E2B8A7FC1905A65D00082933 /* TagoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TagoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2B8A7FD1905A65D00082933 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -70,6 +68,8 @@
 		E2B8A81B1905A77300082933 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		E2B8A81D1905A77E00082933 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E2B8A81F1905A78D00082933 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		E2B8A8221905B72100082933 /* HomePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePageViewController.h; sourceTree = "<group>"; };
+		E2B8A8231905B72200082933 /* HomePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePageViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,8 +148,8 @@
 				E2B8A7ED1905A65D00082933 /* Main.storyboard */,
 				E2B8A7F01905A65D00082933 /* LoginViewController.h */,
 				E2B8A7F11905A65D00082933 /* LoginViewController.m */,
-				E2B8A7F31905A65D00082933 /* DetailViewController.h */,
-				E2B8A7F41905A65D00082933 /* DetailViewController.m */,
+				E2B8A8221905B72100082933 /* HomePageViewController.h */,
+				E2B8A8231905B72200082933 /* HomePageViewController.m */,
 				E2B8A7F61905A65D00082933 /* Images.xcassets */,
 				E2B8A7E21905A65D00082933 /* Supporting Files */,
 			);
@@ -284,8 +284,8 @@
 			files = (
 				E2B8A7EC1905A65D00082933 /* AppDelegate.m in Sources */,
 				E2B8A7F21905A65D00082933 /* LoginViewController.m in Sources */,
+				E2B8A8241905B72200082933 /* HomePageViewController.m in Sources */,
 				E2B8A7E81905A65D00082933 /* main.m in Sources */,
-				E2B8A7F51905A65D00082933 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,6 +498,7 @@
 				E2B8A80F1905A65D00082933 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E2B8A8101905A65D00082933 /* Build configuration list for PBXNativeTarget "TagoTests" */ = {
 			isa = XCConfigurationList;
@@ -506,6 +507,7 @@
 				E2B8A8121905A65D00082933 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
