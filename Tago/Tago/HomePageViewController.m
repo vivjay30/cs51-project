@@ -15,14 +15,6 @@
 
 @implementation HomePageViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -31,26 +23,40 @@
     UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logoutButtonTouchHandler:)];
     self.navigationItem.leftBarButtonItem = logoutButton;
     NSLog(@"Hey");
-    // Send request to Facebook
-    FBRequest *request = [FBRequest requestForMe];
-    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-        // handle response
-        if (!error) {
-            // Parse the data received
-            NSDictionary *userData = (NSDictionary *)result;
-            NSMutableDictionary *userProfile = [NSMutableDictionary dictionaryWithCapacity:1];
-            userProfile[@"name"] = userData[@"name"];
-            [[PFUser currentUser] setObject:userProfile forKey:@"Profile"];
-            NSString *name = [[PFUser currentUser] objectForKey:@"Profile"][@"name"];
-            self.navigationItem.title = name;
-            //NSLog([[PFUser currentUser] objectForKey:@"Data"][@"name"]);
-        }}];
+    NSString *name = [PFUser currentUser][@"name"];
+    NSLog(name);
+    self.navigationItem.title = name;
    // NSLog([[PFUser currentUser] objectForKey:@"Profile"][@"name"]);
 
 }
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    // All data has been downloaded, now we can set the image in the header image view
 
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 5;
+}
+
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    
+    if(cell == nil)
+    {
+        cell = [[UITableViewCell alloc]
+                initWithStyle:UITableViewCellStyleDefault
+                reuseIdentifier:@"cell"];
+    }
+    
+    cell.textLabel.text = @"Test";
+    
+    return cell;
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,7 +70,7 @@
     [PFUser logOut];
     
     // Return to login view controller
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 /*
 #pragma mark - Navigation
