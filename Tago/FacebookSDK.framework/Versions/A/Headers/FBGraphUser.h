@@ -70,6 +70,8 @@
  */
 @property (retain, nonatomic) NSString *link;
 
+@property BOOL *installed;
+
 /*!
  @property
  @abstract Typed access to the user's username.

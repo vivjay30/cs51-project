@@ -29,7 +29,7 @@
     
     // If Our user is Already logged in then update profile which goes to the next page
     if ([PFUser currentUser] && [PFFacebookUtils isLinkedWithUser:[PFUser currentUser]]) {
-        [self updateProfile];
+        [self performSegueWithIdentifier:@"LogIn" sender:self];
     }
 
 }
@@ -84,10 +84,13 @@
             // Parse the data received
             NSDictionary *userData = (NSDictionary *)result;
             [[PFUser currentUser] setObject:userData[@"name"] forKey:@"name"];
-            [[PFUser currentUser] setObject:userData[@"id"] forKey:@"id"];
+            [[PFUser currentUser] setObject:userData[@"id"] forKey:@"Facebookid"];
+            NSLog(userData[@"id"]);
             //[[PFUser currentUser] setObject:[NSNumber numberWithInt:[userData[@"id"] integerValue]] forKey:@"id"];
             [[PFUser currentUser] saveInBackground];
-            [self performSegueWithIdentifier:@"Move" sender:self];
+            NSLog(@"Auth Data is: ");
+            NSLog ([PFUser currentUser][@"authData"]);
+            [self performSegueWithIdentifier:@"LogIn" sender:self];
         }}
      ];
 }

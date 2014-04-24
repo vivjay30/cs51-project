@@ -52,10 +52,10 @@
             </objects>
             <point key="canvasLocation" x="2628" y="127"/>
         </scene>
-        <!--Table View Controller - Start a New Game-->
+        <!--New Game View Controller - Start a New Game-->
         <scene sceneID="h19-A0-QiW">
             <objects>
-                <tableViewController id="DGw-7d-Ekq" sceneMemberID="viewController">
+                <tableViewController id="DGw-7d-Ekq" customClass="NewGameViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="olf-Py-jxi">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -126,7 +126,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="jej-l9-d2m" kind="modal" identifier="Move" id="8JM-HH-QqH"/>
+                        <segue destination="jej-l9-d2m" kind="modal" identifier="LogIn" id="8JM-HH-QqH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1jh-Qy-fvP" userLabel="First Responder" sceneMemberID="firstResponder"/>
