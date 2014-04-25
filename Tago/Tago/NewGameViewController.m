@@ -28,6 +28,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UIBarButtonItem *startGame = [[UIBarButtonItem alloc] initWithTitle:@"Start Game" style:UIBarButtonItemStyleBordered target:self action:@selector(startGameTouchHandler:)];
+    self.navigationItem.rightBarButtonItem = startGame;
+    UIBarButtonItem *suggestionsButton = [[UIBarButtonItem alloc] initWithTitle:@"Suggestions" style:UIBarButtonItemStyleBordered target:self action:@selector(goToSuggestions:)];
+    self.navigationItem.LeftBarButtonItem = suggestionsButton;
+
     
     [self getFriends];
     // Uncomment the following line to preserve selection between presentations.
@@ -74,7 +79,16 @@
     return cell;
 }
 
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    if (cell.accessoryType == UITableViewCellAccessoryNone){
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -124,7 +138,6 @@
 }
 */
 - (void) getFriends {
-    
     self.FacebookUsers = [[NSMutableArray alloc] init];
     FBRequest* friendsRequest = [FBRequest requestWithGraphPath:@"me/friends?fields=installed,name" parameters:nil HTTPMethod:@"GET"];
     [friendsRequest startWithCompletionHandler: ^(FBRequestConnection *connection,
@@ -145,14 +158,45 @@
                             [self.FacebookUsers addObject:object];
                             NSLog(@"%i", self.FacebookUsers.count);
                             [self.tableView reloadData];
-                            
                         }
                     }
                 }];
             }
         }
-
     }];
+}
 
+- (void)startGameTouchHandler:(id)sender {
+    
+    self.gameUsers = [[NSMutableArray alloc] init];
+    
+    for (int i=0; i<[self.FacebookUsers count]; i++) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        UITableViewCell *aCell = (UITableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+        if (aCell.accessoryType == UITableViewCellAccessoryCheckmark) {
+            [self.gameUsers addObject:self.FacebookUsers[i]];
+        }
+    }
+    [self.tabBarController setSelectedIndex:0];
+    NSLog(@"%i", self.gameUsers.count);
+    //[self makeGame];
+    
+}
+
+- (void) makeGame {
+    
+    PFObject *newGame = [PFObject objectWithClassName:@"Game"];
+    newGame[@"creator"] = [PFUser currentUser];
+    newGame[@"startTime"] = [NSDate date];
+    PFRelation *relation = [newGame relationforKey:@"participants"];
+    for (PFUser *user in self.gameUsers)
+    {
+        [relation addObject: user];
+    }
+    [newGame saveInBackground];
+}
+
+- (void) goToSuggestions {
+    [self performSegueWithIdentifier:@"Suggestions" sender:self];
 }
 @end

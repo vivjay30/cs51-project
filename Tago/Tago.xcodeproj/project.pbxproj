@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E227C99C1909986300BA0E85 /* NewGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E227C99B1909986300BA0E85 /* NewGameViewController.m */; };
+		E227C99F190A1CDE00BA0E85 /* SuggestionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E227C99E190A1CDE00BA0E85 /* SuggestionsViewController.m */; };
 		E2B8A7DC1905A65D00082933 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2B8A7DB1905A65D00082933 /* Foundation.framework */; };
 		E2B8A7DE1905A65D00082933 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2B8A7DD1905A65D00082933 /* CoreGraphics.framework */; };
 		E2B8A7E01905A65D00082933 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2B8A7DF1905A65D00082933 /* UIKit.framework */; };
@@ -45,6 +46,8 @@
 /* Begin PBXFileReference section */
 		E227C99A1909986300BA0E85 /* NewGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewGameViewController.h; sourceTree = "<group>"; };
 		E227C99B1909986300BA0E85 /* NewGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewGameViewController.m; sourceTree = "<group>"; };
+		E227C99D190A1CDE00BA0E85 /* SuggestionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuggestionsViewController.h; sourceTree = "<group>"; };
+		E227C99E190A1CDE00BA0E85 /* SuggestionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuggestionsViewController.m; sourceTree = "<group>"; };
 		E2B8A7D81905A65D00082933 /* Tago.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tago.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2B8A7DB1905A65D00082933 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E2B8A7DD1905A65D00082933 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -149,6 +152,8 @@
 				E2B8A7EA1905A65D00082933 /* AppDelegate.h */,
 				E2B8A7EB1905A65D00082933 /* AppDelegate.m */,
 				E2B8A7ED1905A65D00082933 /* Main.storyboard */,
+				E227C99D190A1CDE00BA0E85 /* SuggestionsViewController.h */,
+				E227C99E190A1CDE00BA0E85 /* SuggestionsViewController.m */,
 				E2B8A7F01905A65D00082933 /* LoginViewController.h */,
 				E2B8A7F11905A65D00082933 /* LoginViewController.m */,
 				E2B8A8221905B72100082933 /* HomePageViewController.h */,
@@ -291,6 +296,7 @@
 				E2B8A7EC1905A65D00082933 /* AppDelegate.m in Sources */,
 				E2B8A7F21905A65D00082933 /* LoginViewController.m in Sources */,
 				E2B8A8241905B72200082933 /* HomePageViewController.m in Sources */,
+				E227C99F190A1CDE00BA0E85 /* SuggestionsViewController.m in Sources */,
 				E2B8A7E81905A65D00082933 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

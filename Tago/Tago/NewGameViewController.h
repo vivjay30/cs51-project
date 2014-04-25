@@ -12,4 +12,8 @@
 
 @property NSMutableArray *FacebookUsers;
 
+@property NSMutableArray *gameUsers;
+
+- (void) makeGame;
+- (void) goToSuggestions;
 @end
