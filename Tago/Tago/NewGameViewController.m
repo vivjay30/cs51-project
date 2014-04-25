@@ -177,6 +177,7 @@
             [self.gameUsers addObject:self.FacebookUsers[i]];
         }
     }
+    
     [self.tabBarController setSelectedIndex:0];
     NSLog(@"%i", self.gameUsers.count);
     //[self makeGame];
@@ -197,6 +198,18 @@
 }
 
 - (void) goToSuggestions {
+    self.gameUsers = [[NSMutableArray alloc] init];
+    
+    for (int i=0; i<[self.FacebookUsers count]; i++) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        UITableViewCell *aCell = (UITableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+        if (aCell.accessoryType == UITableViewCellAccessoryCheckmark) {
+            [self.gameUsers addObject:self.FacebookUsers[i]];
+        }
+    }
+
+    
+    
     [self performSegueWithIdentifier:@"Suggestions" sender:self];
 }
 @end
