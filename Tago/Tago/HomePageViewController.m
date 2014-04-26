@@ -22,7 +22,7 @@
     // Do any additional setup after loading the view.
     UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logoutButtonTouchHandler:)];
     self.navigationItem.leftBarButtonItem = logoutButton;
-    NSLog(@"Hey");
+    //NSLog(@"Hey");
     NSString *name = [PFUser currentUser][@"name"];
     NSLog(name);
     self.navigationItem.title = name;
@@ -54,8 +54,7 @@
                 initWithStyle:UITableViewCellStyleDefault
                 reuseIdentifier:@"cell"];
     }
-    
-    cell.textLabel.text = self.gamesArray[[indexPath row]][@"name"];
+    cell.textLabel.text = self.gamesArray[[indexPath row]][@"GameName"];
     
     return cell;
 }
@@ -85,23 +84,13 @@
 */
 - (void) updateGames {
     PFQuery *query = [PFQuery queryWithClassName:@"Game"];
-    [query whereKey:@"creator" equalTo:[PFUser currentUser]];
+    [query whereKey:@"participants" equalTo:[PFUser currentUser]];
+    [query whereKey:@"completed" equalTo:[NSNumber numberWithBool:NO]];
     [query findObjectsInBackgroundWithBlock:^(NSArray *games, NSError *error) {
-        
         self.gamesArray = [[NSMutableArray alloc] initWithArray: games];
-        PFQuery *query2 = [PFQuery queryWithClassName:@"Game"];
-        [query2 whereKey:@"participants" equalTo:[PFUser currentUser]];
-        [query2 findObjectsInBackgroundWithBlock:^(NSArray *games, NSError *error) {
-            for (PFObject *game in games)
-            {
-                [self.gamesArray addObject:game];
-            }
-                [self.tableView reloadData];
-        }];
+        [self.tableView reloadData];
         
     }];
-
-
 }
 
 @end

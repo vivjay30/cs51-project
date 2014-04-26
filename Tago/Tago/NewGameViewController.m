@@ -192,6 +192,7 @@
     NSLog(gamename);
 
     [newGame setObject:gamename forKey:@"GameName"];
+    [newGame setObject:NO forKey:@"completed"];
     PFRelation *relation = [newGame relationforKey:@"participants"];
     for (PFUser *user in self.gameUsers)
     {
@@ -202,7 +203,7 @@
 }
 
 - (void) goToSuggestions {
-    self.gameUsers = [[NSMutableArray alloc] init];
+    /*self.gameUsers = [[NSMutableArray alloc] init];
     for (int i=0; i<[self.FacebookUsers count]; i++) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
         UITableViewCell *aCell = (UITableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
@@ -210,7 +211,53 @@
             [self.gameUsers addObject:self.FacebookUsers[i]];
         }
     }
-    
-    [self performSegueWithIdentifier:@"Suggestions" sender:self];
+
+    if ([self.gameUsers count] == 0) {
+        [self.gameUsers addObject:self.FacebookUsers[0]];
+    }
+    double omega = 1.5;
+    double weight = 1.3;
+    PFQuery *query = [PFQuery queryWithClassName:@"Game"];
+    [query whereKey:@"participants" equalTo:[PFUser currentUser]];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *foundgames, NSError *errorgame)] {
+        if (errorgame) {
+            NSLog(@"Error: %@ %@", errorgame, [errorgame userInfo]);
+        }
+        else {
+            NSMutableDictionary *tempdict = [[NSMutableDictionary alloc] init];
+            for (PFObject *foundgame in foundgames) {
+                PFRelation *relation = [result relationForKey:@"participants"]
+                PFQuery *query2 = [relation query];
+                [query findObjectsinBackgroundWithBlock:^(NSArray *foundusers, NSERRor *erroruser)] {
+                    if (erroruser) {
+                        NSLog(@"Error: &@ &@", erroruser, [erroruser userInfo]);
+                    }
+                    else {
+                        for (PFUser *founduser in foundusers) {
+                            if (founduser != [PFUser currentUser]) && ([self.gameUsers indexOfObject:founduser == NSIntegerMax]) && ([tempdict objectForKey:founduser] != nil) {
+                                [tempdict setObject:(double)0 forKey:founduser];
+                            }
+                            double ir = if (foundgame.creator == [PFUser currentUser]) {
+                                omega * pow(0.5, (double)[[NSDate date] timeIntervalSinceDate:foundgame.createdAt]);
+                            }
+                            else {
+                                pow(0.5, (double)[[NSDate date] timeIntervalSinceDate:foundgame.createdAt]);
+                            }
+                            //finding intersection
+                            NSMutableSet *tempset = [NSMutableSet setwithArray:gameUsers];
+                            NSMutableSet *tempset2 = [NSMutableSet setwithArray:foundusers];
+                            NSMutableSet *intersect = [tempset intersectSet:tempset2];
+                            double toadd = ir * weight * (double)[intersect count];
+                            double old = [tempdict objectForKey:founduser];
+                            [tempdict setObject:(toadd + old) forKey:founduser]
+                        }
+                    }
+                }
+            }
+            NSMutableArray self.suggestedUsers = [tempdict keysSortedByValueUsingSelector:NSOrderedDescending];
+        }
+        [self performSegueWithIdentifier:@"Suggestions" sender:self];
+    };
+*/
 }
 @end
