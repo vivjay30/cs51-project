@@ -178,28 +178,31 @@
         }
     }
     
+    [self makeGame];
     [self.tabBarController setSelectedIndex:0];
     NSLog(@"%i", self.gameUsers.count);
-    //[self makeGame];
+
     
 }
 
 - (void) makeGame {
-    
     PFObject *newGame = [PFObject objectWithClassName:@"Game"];
-    newGame[@"creator"] = [PFUser currentUser];
-    newGame[@"startTime"] = [NSDate date];
+    [newGame setObject:[PFUser currentUser] forKey:@"creator"];
+    NSString *gamename = [NSString stringWithFormat:@"%@'s game", [PFUser currentUser][@"name"]];
+    NSLog(gamename);
+
+    [newGame setObject:gamename forKey:@"GameName"];
     PFRelation *relation = [newGame relationforKey:@"participants"];
     for (PFUser *user in self.gameUsers)
     {
         [relation addObject: user];
     }
+    [relation addObject: [PFUser currentUser]];
     [newGame saveInBackground];
 }
 
 - (void) goToSuggestions {
     self.gameUsers = [[NSMutableArray alloc] init];
-    
     for (int i=0; i<[self.FacebookUsers count]; i++) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
         UITableViewCell *aCell = (UITableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
@@ -207,8 +210,6 @@
             [self.gameUsers addObject:self.FacebookUsers[i]];
         }
     }
-
-    
     
     [self performSegueWithIdentifier:@"Suggestions" sender:self];
 }

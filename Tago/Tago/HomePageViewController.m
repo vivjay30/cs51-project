@@ -26,6 +26,7 @@
     NSString *name = [PFUser currentUser][@"name"];
     NSLog(name);
     self.navigationItem.title = name;
+    [self updateGames];
    // NSLog([[PFUser currentUser] objectForKey:@"Profile"][@"name"]);
 
 }
@@ -38,7 +39,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return self.gamesArray.count;
 }
 
 
@@ -54,7 +55,7 @@
                 reuseIdentifier:@"cell"];
     }
     
-    cell.textLabel.text = @"Test";
+    cell.textLabel.text = self.gamesArray[[indexPath row]][@"name"];
     
     return cell;
 }
@@ -82,5 +83,25 @@
     // Pass the selected object to the new view controller.
 }
 */
+- (void) updateGames {
+    PFQuery *query = [PFQuery queryWithClassName:@"Game"];
+    [query whereKey:@"creator" equalTo:[PFUser currentUser]];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *games, NSError *error) {
+        
+        self.gamesArray = [[NSMutableArray alloc] initWithArray: games];
+        PFQuery *query2 = [PFQuery queryWithClassName:@"Game"];
+        [query2 whereKey:@"participants" equalTo:[PFUser currentUser]];
+        [query2 findObjectsInBackgroundWithBlock:^(NSArray *games, NSError *error) {
+            for (PFObject *game in games)
+            {
+                [self.gamesArray addObject:game];
+            }
+                [self.tableView reloadData];
+        }];
+        
+    }];
+
+
+}
 
 @end

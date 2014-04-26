@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface HomePageViewController : UITableViewController
-
+@property NSMutableArray *gamesArray;
+- (void) updateGames;
 @end
