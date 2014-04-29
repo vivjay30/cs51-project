@@ -14,6 +14,8 @@
 
 @property NSMutableArray *gameUsers;
 
+@property NSArray *suggestedUsers;
+
 - (void) makeGame;
 - (void) goToSuggestions;
 @end
