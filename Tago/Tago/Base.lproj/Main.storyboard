@@ -110,7 +110,6 @@
                     <navigationItem key="navigationItem" title="Start a New Game" id="lmZ-iO-72C"/>
                     <connections>
                         <segue destination="bDM-gH-7RQ" kind="push" identifier="Suggestions" id="IPY-yi-syl"/>
-                        <segue destination="tq2-PC-nE3" kind="push" identifier="StartedGame" id="Y1b-AZ-iLq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qpj-K9-xWM" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -309,7 +308,4 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="Y1b-AZ-iLq"/>
-    </inferredMetricsTieBreakers>
 </document>

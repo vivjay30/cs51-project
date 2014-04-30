@@ -180,7 +180,12 @@
     }
     
     [self makeGame];
-    [self performSegueWithIdentifier:@"StartedGame" sender:self];
+    UINavigationController *navc = [self.tabBarController.viewControllers objectAtIndex:0];
+    HomePageViewController *homepage = [navc.viewControllers objectAtIndex:0];
+    [navc popToRootViewControllerAnimated:NO];
+    [homepage updateGames];
+    [homepage.tableView reloadData];
+    [self.tabBarController setSelectedIndex:0];
     
 }
 
@@ -227,7 +232,6 @@
     }
     
     if ([self.gameUsers count] == 0)
-        
     {
         [self.gameUsers addObject:self.FacebookUsers[0]];
     }
@@ -328,20 +332,4 @@
     }];
     
 }
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Make sure your segue name in storyboard is the same as this line
-    if ([[segue identifier] isEqualToString:@"SelectedGame"])
-    {
-        // Get reference to the destination view controller
-        HomePageViewController *vc = [segue destinationViewController];
-        
-        // Pass any objects to the view controller here, like...
-        [vc updateGames];
-        [vc.tableView reloadData];
-    }
-}
-
-
-
 @end
