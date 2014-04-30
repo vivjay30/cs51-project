@@ -9,6 +9,8 @@
 #import "NewGameViewController.h"
 #import <Parse/Parse.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import "SuggestionsViewController.h"
+#import "HomePageViewController.h"
 
 @interface NewGameViewController ()
 
@@ -148,7 +150,6 @@
         for (NSDictionary<FBGraphUser> *friend in friends) {
             if (friend.installed)
             {
-                NSLog(friend.id);
                 PFQuery *query = [PFUser query];
                 [query whereKey:@"Facebookid" equalTo:friend.id];
                 [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
@@ -179,9 +180,7 @@
     }
     
     [self makeGame];
-    [self.tabBarController setSelectedIndex:0];
-    NSLog(@"%i", self.gameUsers.count);
-
+    [self performSegueWithIdentifier:@"StartedGame" sender:self];
     
 }
 
@@ -189,21 +188,36 @@
     PFObject *newGame = [PFObject objectWithClassName:@"Game"];
     [newGame setObject:[PFUser currentUser] forKey:@"creator"];
     NSString *gamename = [NSString stringWithFormat:@"%@'s game", [PFUser currentUser][@"name"]];
-    NSLog(gamename);
 
     [newGame setObject:gamename forKey:@"GameName"];
-    [newGame setObject:NO forKey:@"completed"];
+    [newGame setObject:[NSNumber numberWithBool:NO] forKey:@"completed"];
     PFRelation *relation = [newGame relationforKey:@"participants"];
+    [self.gameUsers addObject:[PFUser currentUser]];
     for (PFUser *user in self.gameUsers)
     {
         [relation addObject: user];
     }
-    [relation addObject: [PFUser currentUser]];
+    NSMutableArray *targets = [[NSMutableArray alloc] initWithArray:self.gameUsers];
+    
+    NSUInteger count = [targets count];
+    NSMutableDictionary *targetsdict = [[NSMutableDictionary alloc] init];
+    for (NSUInteger i = 0; i < count; ++i) {
+        // Select a random element between i and end of array to swap with.
+        int n;
+        do
+        {
+            n = arc4random() % count;
+        }while (n == i);
+        [targetsdict setObject:self.gameUsers[n] forKey:((PFUser *)targets[i]).objectId];
+    }
+    [newGame setObject:targetsdict forKey:@"targets"];
+    
     [newGame saveInBackground];
 }
 
-- (void) goToSuggestions {
-    /*self.gameUsers = [[NSMutableArray alloc] init];
+- (void) goToSuggestions: (id)sender {
+    
+    self.gameUsers = [[NSMutableArray alloc] init];
     for (int i=0; i<[self.FacebookUsers count]; i++) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
         UITableViewCell *aCell = (UITableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
@@ -211,53 +225,123 @@
             [self.gameUsers addObject:self.FacebookUsers[i]];
         }
     }
-
-    if ([self.gameUsers count] == 0) {
+    
+    if ([self.gameUsers count] == 0)
+        
+    {
         [self.gameUsers addObject:self.FacebookUsers[0]];
     }
+    
+    
     double omega = 1.5;
+    
     double weight = 1.3;
+    
+    
     PFQuery *query = [PFQuery queryWithClassName:@"Game"];
     [query whereKey:@"participants" equalTo:[PFUser currentUser]];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *foundgames, NSError *errorgame)] {
+    [query findObjectsInBackgroundWithBlock:^(NSArray *foundgames, NSError *errorgame) {
         if (errorgame) {
             NSLog(@"Error: %@ %@", errorgame, [errorgame userInfo]);
         }
-        else {
+        else
+        {
+            
             NSMutableDictionary *tempdict = [[NSMutableDictionary alloc] init];
+ 
             for (PFObject *foundgame in foundgames) {
-                PFRelation *relation = [result relationForKey:@"participants"]
+          
+                PFRelation *relation = [foundgame relationforKey:@"participants"];
+            
                 PFQuery *query2 = [relation query];
-                [query findObjectsinBackgroundWithBlock:^(NSArray *foundusers, NSERRor *erroruser)] {
+           
+                [query2 findObjectsInBackgroundWithBlock:^(NSArray *foundusers, NSError *erroruser) {
+                  
                     if (erroruser) {
-                        NSLog(@"Error: &@ &@", erroruser, [erroruser userInfo]);
+                        
+                        NSLog(@"Error: %@", [erroruser userInfo][@"error"]);
+                        
                     }
                     else {
-                        for (PFUser *founduser in foundusers) {
-                            if (founduser != [PFUser currentUser]) && ([self.gameUsers indexOfObject:founduser == NSIntegerMax]) && ([tempdict objectForKey:founduser] != nil) {
-                                [tempdict setObject:(double)0 forKey:founduser];
+                        
+                        for (PFUser *founduser in foundusers)
+                            
+                        {
+                            if ((founduser.objectId != [PFUser currentUser].objectId) && ([self.gameUsers indexOfObject:founduser] == NSNotFound) && ([tempdict objectForKey:founduser.objectId] == nil)) {
+                                [tempdict setObject:[NSNumber numberWithDouble:0] forKey:founduser.objectId];
+                                
                             }
-                            double ir = if (foundgame.creator == [PFUser currentUser]) {
-                                omega * pow(0.5, (double)[[NSDate date] timeIntervalSinceDate:foundgame.createdAt]);
+                      
+                            double ir = 0;
+      
+                            if (foundgame[@"creator"] == [PFUser currentUser])
+                            {
+                                
+                                ir = omega * pow(0.5, (double)[[NSDate date] timeIntervalSinceDate:foundgame.createdAt]);
+                                
                             }
-                            else {
-                                pow(0.5, (double)[[NSDate date] timeIntervalSinceDate:foundgame.createdAt]);
+
+                            else
+                                
+                            {
+                                
+                                ir = pow(0.5, (double)[[NSDate date] timeIntervalSinceDate:foundgame.createdAt]);
+                                
                             }
+   
                             //finding intersection
-                            NSMutableSet *tempset = [NSMutableSet setwithArray:gameUsers];
-                            NSMutableSet *tempset2 = [NSMutableSet setwithArray:foundusers];
-                            NSMutableSet *intersect = [tempset intersectSet:tempset2];
-                            double toadd = ir * weight * (double)[intersect count];
-                            double old = [tempdict objectForKey:founduser];
-                            [tempdict setObject:(toadd + old) forKey:founduser]
+
+                            NSMutableSet *tempset = [NSMutableSet setWithArray:self.gameUsers];
+                            NSMutableSet *tempset2 = [NSMutableSet setWithArray:foundusers];
+
+                            [tempset intersectSet:(tempset2)];
+
+                            double toadd = ir * weight * (double)[tempset count];
+ 
+                            double old = [[tempdict objectForKey:founduser] doubleValue];
+
+                            //NSLog(founduser[@"username"]);
+                            
+                            [tempdict setObject:([NSNumber numberWithDouble:(toadd + old)]) forKey:founduser.objectId];
+                            
                         }
                     }
-                }
+                    
+                    self.suggestedUsers = [tempdict keysSortedByValueUsingComparator:^NSComparisonResult(id obj1, id obj2) { return [obj2 compare:obj1];
+                }];
+                    
+                    
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    SuggestionsViewController *suggestionsPage = [storyboard instantiateViewControllerWithIdentifier:@"SuggestionsPage"];
+                    suggestionsPage.suggestedUsers = self.suggestedUsers;
+                    [self.navigationController pushViewController:suggestionsPage animated:YES];
+
+                }];
+                
+                // suggestedUsers returns an NSArray of objectIDs, which are strings, corresponding to PFUsers, hopefully
+                
+                // in increasing order from most suggested to least suggested
+                
             }
-            NSMutableArray self.suggestedUsers = [tempdict keysSortedByValueUsingSelector:NSOrderedDescending];
-        }
-        [self performSegueWithIdentifier:@"Suggestions" sender:self];
-    };
-*/
+        };
+        
+    }];
+    
 }
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Make sure your segue name in storyboard is the same as this line
+    if ([[segue identifier] isEqualToString:@"SelectedGame"])
+    {
+        // Get reference to the destination view controller
+        HomePageViewController *vc = [segue destinationViewController];
+        
+        // Pass any objects to the view controller here, like...
+        [vc updateGames];
+        [vc.tableView reloadData];
+    }
+}
+
+
+
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E2136AB0191063FC0095D07F /* PictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2136AAF191063FC0095D07F /* PictureViewController.m */; };
+		E2136AB31910787A0095D07F /* GamePage.m in Sources */ = {isa = PBXBuildFile; fileRef = E2136AB21910787A0095D07F /* GamePage.m */; };
 		E227C99C1909986300BA0E85 /* NewGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E227C99B1909986300BA0E85 /* NewGameViewController.m */; };
 		E227C99F190A1CDE00BA0E85 /* SuggestionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E227C99E190A1CDE00BA0E85 /* SuggestionsViewController.m */; };
 		E2B8A7DC1905A65D00082933 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2B8A7DB1905A65D00082933 /* Foundation.framework */; };
@@ -44,6 +46,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E2136AAE191063FC0095D07F /* PictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureViewController.h; sourceTree = "<group>"; };
+		E2136AAF191063FC0095D07F /* PictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureViewController.m; sourceTree = "<group>"; };
+		E2136AB11910787A0095D07F /* GamePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePage.h; sourceTree = "<group>"; };
+		E2136AB21910787A0095D07F /* GamePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GamePage.m; sourceTree = "<group>"; };
 		E227C99A1909986300BA0E85 /* NewGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewGameViewController.h; sourceTree = "<group>"; };
 		E227C99B1909986300BA0E85 /* NewGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewGameViewController.m; sourceTree = "<group>"; };
 		E227C99D190A1CDE00BA0E85 /* SuggestionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuggestionsViewController.h; sourceTree = "<group>"; };
@@ -152,14 +158,18 @@
 				E2B8A7EA1905A65D00082933 /* AppDelegate.h */,
 				E2B8A7EB1905A65D00082933 /* AppDelegate.m */,
 				E2B8A7ED1905A65D00082933 /* Main.storyboard */,
-				E227C99D190A1CDE00BA0E85 /* SuggestionsViewController.h */,
-				E227C99E190A1CDE00BA0E85 /* SuggestionsViewController.m */,
-				E2B8A7F01905A65D00082933 /* LoginViewController.h */,
-				E2B8A7F11905A65D00082933 /* LoginViewController.m */,
+				E2136AB11910787A0095D07F /* GamePage.h */,
+				E2136AB21910787A0095D07F /* GamePage.m */,
 				E2B8A8221905B72100082933 /* HomePageViewController.h */,
 				E2B8A8231905B72200082933 /* HomePageViewController.m */,
+				E2136AAE191063FC0095D07F /* PictureViewController.h */,
+				E2136AAF191063FC0095D07F /* PictureViewController.m */,
+				E227C99D190A1CDE00BA0E85 /* SuggestionsViewController.h */,
+				E227C99E190A1CDE00BA0E85 /* SuggestionsViewController.m */,
 				E227C99A1909986300BA0E85 /* NewGameViewController.h */,
 				E227C99B1909986300BA0E85 /* NewGameViewController.m */,
+				E2B8A7F01905A65D00082933 /* LoginViewController.h */,
+				E2B8A7F11905A65D00082933 /* LoginViewController.m */,
 				E2B8A7F61905A65D00082933 /* Images.xcassets */,
 				E2B8A7E21905A65D00082933 /* Supporting Files */,
 			);
@@ -295,6 +305,8 @@
 				E227C99C1909986300BA0E85 /* NewGameViewController.m in Sources */,
 				E2B8A7EC1905A65D00082933 /* AppDelegate.m in Sources */,
 				E2B8A7F21905A65D00082933 /* LoginViewController.m in Sources */,
+				E2136AB0191063FC0095D07F /* PictureViewController.m in Sources */,
+				E2136AB31910787A0095D07F /* GamePage.m in Sources */,
 				E2B8A8241905B72200082933 /* HomePageViewController.m in Sources */,
 				E227C99F190A1CDE00BA0E85 /* SuggestionsViewController.m in Sources */,
 				E2B8A7E81905A65D00082933 /* main.m in Sources */,

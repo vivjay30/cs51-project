@@ -8,6 +8,7 @@
 
 #import "HomePageViewController.h"
 #import <Parse/Parse.h>
+#import "GamePage.h"
 
 @interface HomePageViewController ()
 
@@ -22,12 +23,9 @@
     // Do any additional setup after loading the view.
     UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logoutButtonTouchHandler:)];
     self.navigationItem.leftBarButtonItem = logoutButton;
-    //NSLog(@"Hey");
     NSString *name = [PFUser currentUser][@"name"];
-    NSLog(name);
     self.navigationItem.title = name;
     [self updateGames];
-   // NSLog([[PFUser currentUser] objectForKey:@"Profile"][@"name"]);
 
 }
 
@@ -55,8 +53,16 @@
                 reuseIdentifier:@"cell"];
     }
     cell.textLabel.text = self.gamesArray[[indexPath row]][@"GameName"];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    GamePage *newGamePage = [storyboard instantiateViewControllerWithIdentifier:@"GamePage"];
+    newGamePage.currentGame = [self gamesArray][[indexPath row]];
+    [self.navigationController pushViewController:newGamePage animated:YES];
 }
 
 - (void)didReceiveMemoryWarning

@@ -7,6 +7,7 @@
 //
 
 #import "SuggestionsViewController.h"
+#import <Parse/Parse.h>
 
 @interface SuggestionsViewController ()
 
@@ -45,26 +46,31 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return self.suggestedUsers.count;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"myCell"];
     
-    // Configure the cell...
+    if(cell == nil)
+    {
+        cell = [[UITableViewCell alloc]
+                initWithStyle:UITableViewCellStyleDefault
+                reuseIdentifier:@"myCell"];
+    }
+    
+    cell.textLabel.text = ((PFUser *)self.suggestedUsers[[indexPath row]])[@"name"];
     
     return cell;
 }
-*/
 
 /*
 // Override to support conditional editing of the table view.

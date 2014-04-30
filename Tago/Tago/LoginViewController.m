@@ -70,7 +70,7 @@
             [self updateProfile];
             NSLog(@"User with facebook logged in!");
         }
-        }];
+    }];
     
     [_activityIndicator startAnimating]; // Show loading indicator until login is finished
 }
@@ -85,11 +85,7 @@
             NSDictionary *userData = (NSDictionary *)result;
             [[PFUser currentUser] setObject:userData[@"name"] forKey:@"name"];
             [[PFUser currentUser] setObject:userData[@"id"] forKey:@"Facebookid"];
-            NSLog(userData[@"id"]);
-            //[[PFUser currentUser] setObject:[NSNumber numberWithInt:[userData[@"id"] integerValue]] forKey:@"id"];
             [[PFUser currentUser] saveInBackground];
-            NSLog(@"Auth Data is: ");
-            NSLog ([PFUser currentUser][@"authData"]);
             [self performSegueWithIdentifier:@"LogIn" sender:self];
         }}
      ];

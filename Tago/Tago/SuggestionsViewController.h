@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface SuggestionsViewController : UITableViewController
+@property NSArray *suggestedUsers;
 
 @end
