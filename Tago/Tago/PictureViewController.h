@@ -11,6 +11,6 @@
 @interface PictureViewController : UIViewController <UIImagePickerControllerDelegate>
 - (IBAction)cameraButtonTapped:(id)sender;
 - (void)uploadImage:(NSData *)imageData;
-- (void) moveOn: (id)sender;
+@property UIImage *image;
 
 @end

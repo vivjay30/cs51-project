@@ -10,6 +10,9 @@
 
 @interface TakenPictureViewController : UITableViewController
 @property NSMutableArray *gamesArray;
+@property NSMutableArray *targetsArray;
+@property NSData *picture;
 - (void) updateGames;
+- (void) updateTargets;
 
 @end

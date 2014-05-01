@@ -25,17 +25,12 @@
     return self;
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.tabBarController.tabBar setHidden:NO];
     [self updateGames];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -70,29 +65,60 @@
                 reuseIdentifier:@"GameCell"];
     }
     cell.GameText.text = self.gamesArray[[indexPath row]][@"GameName"];
-    cell.TargetText.text = @"hey";
+    cell.TargetText.text = self.targetsArray[[indexPath row]][@"name"];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    PFFile *imageFile = [PFFile fileWithName:@"Image.jpg" data:self.picture];
+    [imageFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            
+            // Create a PFObject around a PFFile and associate it with the current user
+            PFObject *photoTag = [PFObject objectWithClassName:@"PhotoTag"];
+            [photoTag setObject:imageFile forKey:@"imageFile"];
+            
+            // Set the access control list to current user for security purposes
+            photoTag.ACL = [PFACL ACLWithUser:[PFUser currentUser]];
+            
+            PFUser *user = [PFUser currentUser];
+            [photoTag setObject:user forKey:@"Taker"];
+            
+            [photoTag setObject:[self.targetsArray objectAtIndex:[indexPath row]] forKey:@"PictureOf"];
+            [photoTag setObject:[self.gamesArray objectAtIndex:[indexPath row]] forKey:@"Game"];
+            
+            [photoTag saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (error) {
+                    // Log details of the failure
+                    NSLog(@"Error: %@ %@", error, [error userInfo]);
+                }
+            }];
+        }
+        else{
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+    
 }
-*/
 - (void) updateGames {
     PFQuery *query = [PFQuery queryWithClassName:@"Game"];
     [query whereKey:@"participants" equalTo:[PFUser currentUser]];
     [query whereKey:@"completed" equalTo:[NSNumber numberWithBool:NO]];
     [query findObjectsInBackgroundWithBlock:^(NSArray *games, NSError *error) {
         self.gamesArray = [[NSMutableArray alloc] initWithArray: games];
-        [self.tableView reloadData];
+        [self updateTargets];
     }];
+}
+- (void) updateTargets {
+    self.targetsArray = [[NSMutableArray alloc] init];
+    for (PFObject *game in self.gamesArray){
+        PFQuery *query = [PFUser query];
+        PFUser *target = [query getObjectWithId:[game[@"targets"] objectForKey:[PFUser currentUser].objectId]];
+        [self.targetsArray addObject:target];
+    }
+    [self.tableView reloadData];
 }
 @end

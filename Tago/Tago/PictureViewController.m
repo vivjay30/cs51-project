@@ -24,7 +24,9 @@
     }
     return self;
 }
-
+- (void)viewWillAppear:(BOOL)animated{
+    [self cameraButtonTapped:nil];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -34,97 +36,47 @@
     
 }
 
+- (IBAction)cameraButtonTapped:(id)sender{
+    // Create image picker controller
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    
+    // Set source to the camera
+    imagePicker.sourceType =  UIImagePickerControllerSourceTypeCamera;
+    
+    // Delegate is self
+    imagePicker.delegate = self;
+    
+    // Show image picker
+    [self presentViewController:imagePicker animated:YES completion:nil];
+
+
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-- (void) moveOn:(id)sender {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    TakenPictureViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"TakenPicture"];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (IBAction)cameraButtonTapped:(id)sender
-{
-    if ([UIImagePickerController isSourceTypeAvailable:
-         UIImagePickerControllerSourceTypeCamera] == YES){
-        // Create image picker controller
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-        
-        // Set source to the camera
-        imagePicker.sourceType =  UIImagePickerControllerSourceTypeCamera;
-        
-        // Delegate is self
-        imagePicker.delegate = self;
-        
-        // Show image picker
-        [self presentModalViewController:imagePicker animated:YES];
-    }
-    else{
-        // Device has no camera
-        UIImage *image;
-        int r = arc4random() % 5;
-        switch (r) {
-            case 0:
-                image = [UIImage imageNamed:@"ParseLogo.jpg"];
-                break;
-            case 1:
-                image = [UIImage imageNamed:@"Crowd.jpg"];
-                break;
-            case 2:
-                image = [UIImage imageNamed:@"Desert.jpg"];
-                break;
-            case 3:
-                image = [UIImage imageNamed:@"Lime.jpg"];
-                break;
-            case 4:
-                image = [UIImage imageNamed:@"Sunflowers.jpg"];
-                break;
-            default:
-                break;
-        }
-        
-        // Resize image
-        UIGraphicsBeginImageContext(CGSizeMake(640, 960));
-        [image drawInRect: CGRectMake(0, 0, 640, 960)];
-        UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        NSData *imageData = UIImageJPEGRepresentation(image, 0.05f);
-        [self uploadImage:imageData];
-    }
-}
-
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     // Access the uncropped image from info dictionary
-    UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    
-    // Dismiss controller
-    [picker dismissModalViewControllerAnimated:YES];
+    self.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     
     // Resize image
     UIGraphicsBeginImageContext(CGSizeMake(640, 960));
-    [image drawInRect: CGRectMake(0, 0, 640, 960)];
+    [self.image drawInRect: CGRectMake(0, 0, 640, 960)];
     UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     // Upload image
-    NSData *imageData = UIImageJPEGRepresentation(image, 0.05f);
-    [self uploadImage:imageData];
+    NSData *imageData = UIImageJPEGRepresentation(self.image, 0.05f);
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    TakenPictureViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"TakenPicture"];
+    vc.picture =  imageData;
+    [picker pushViewController:vc animated:YES];
+    
 }
 
 - (void)uploadImage:(NSData *)imageData

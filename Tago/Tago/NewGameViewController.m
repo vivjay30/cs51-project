@@ -178,7 +178,7 @@
         {
             n = arc4random() % count;
         }while (n == i);
-        [targetsdict setObject:self.gameUsers[n] forKey:((PFUser *)targets[i]).objectId];
+        [targetsdict setObject:((PFUser *)self.gameUsers[n]).objectId forKey:((PFUser *)targets[i]).objectId];
     }
     [newGame setObject:targetsdict forKey:@"targets"];
     

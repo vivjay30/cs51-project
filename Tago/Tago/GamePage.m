@@ -32,7 +32,7 @@
     self.participants = [RelationParts.query findObjects];
     
     PFQuery *query = [PFUser query];
-    [query whereKey:@"objectId" equalTo:((PFUser *)[[self currentGame][@"targets"] objectForKey:[PFUser currentUser].objectId]).objectId];
+    [query whereKey:@"objectId" equalTo:[[self currentGame][@"targets"] objectForKey:[PFUser currentUser].objectId]];
     self.target = (PFUser *)[query getFirstObject];
 }
 
