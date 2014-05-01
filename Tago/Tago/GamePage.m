@@ -30,8 +30,10 @@
     self.navigationItem.title = self.currentGame[@"GameName"];
     PFRelation *RelationParts = [self currentGame][@"participants"];
     self.participants = [RelationParts.query findObjects];
-
-
+    
+    PFQuery *query = [PFUser query];
+    [query whereKey:@"objectId" equalTo:((PFUser *)[[self currentGame][@"targets"] objectForKey:[PFUser currentUser].objectId]).objectId];
+    self.target = (PFUser *)[query getFirstObject];
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,10 +50,8 @@
     
     if (section == 0)
     {
-        PFQuery *query = [PFUser query];
-        [query whereKey:@"objectId" equalTo:((PFUser *)[[self currentGame][@"targets"] objectForKey:[PFUser currentUser].objectId]).objectId];
-        PFUser *target = [query findObjects][0];
-        return [NSString stringWithFormat:@"Your Target is %@", target[@"name"]];
+
+        return [NSString stringWithFormat:@"Your Target is %@", self.target[@"name"]];
     }
     else if (section == 1)
     {

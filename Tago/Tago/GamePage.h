@@ -12,5 +12,6 @@
 @interface GamePage : UITableViewController
 @property PFObject *currentGame;
 @property NSArray *participants;
+@property PFUser *target;
 
 @end

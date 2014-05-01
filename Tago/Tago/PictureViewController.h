@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PictureViewController : UIViewController
+@interface PictureViewController : UIViewController <UIImagePickerControllerDelegate>
+- (IBAction)cameraButtonTapped:(id)sender;
+- (void)uploadImage:(NSData *)imageData;
+- (void) moveOn: (id)sender;
 
 @end

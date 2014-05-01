@@ -17,5 +17,5 @@
 @property NSArray *suggestedUsers;
 
 - (void) makeGame;
-- (void) goToSuggestions;
+- (void) goToSuggestions: (id)sender;
 @end

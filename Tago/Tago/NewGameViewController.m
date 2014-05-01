@@ -91,65 +91,23 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 }
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 - (void) getFriends {
+    
+    // Getting the list of all facebook friends
     self.FacebookUsers = [[NSMutableArray alloc] init];
     FBRequest* friendsRequest = [FBRequest requestWithGraphPath:@"me/friends?fields=installed,name" parameters:nil HTTPMethod:@"GET"];
     [friendsRequest startWithCompletionHandler: ^(FBRequestConnection *connection,
                                                   NSDictionary* result,
                                                   NSError *error) {
+        
+        // Iterating over all the friends and see who has the app installed
         NSArray* friends = [result objectForKey:@"data"];
         NSLog(@"Found: %i friends", friends.count);
         for (NSDictionary<FBGraphUser> *friend in friends) {
             if (friend.installed)
             {
+                // Get the PFUser of all the facebook ids
                 PFQuery *query = [PFUser query];
                 [query whereKey:@"Facebookid" equalTo:friend.id];
                 [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
@@ -169,8 +127,8 @@
 
 - (void)startGameTouchHandler:(id)sender {
     
+    // Getting the users that were selected
     self.gameUsers = [[NSMutableArray alloc] init];
-    
     for (int i=0; i<[self.FacebookUsers count]; i++) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
         UITableViewCell *aCell = (UITableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
@@ -180,6 +138,8 @@
     }
     
     [self makeGame];
+    
+    // Popping back to the home page and updating the games
     UINavigationController *navc = [self.tabBarController.viewControllers objectAtIndex:0];
     HomePageViewController *homepage = [navc.viewControllers objectAtIndex:0];
     [navc popToRootViewControllerAnimated:NO];
@@ -187,6 +147,11 @@
     [homepage.tableView reloadData];
     [self.tabBarController setSelectedIndex:0];
     
+    // Destroying the current New Game Page
+    UINavigationController *mynavc = [self.tabBarController.viewControllers objectAtIndex:1];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    NewGameViewController *newgamevs = [storyboard instantiateViewControllerWithIdentifier:@"NewGame"];
+    mynavc.viewControllers = [[NSArray alloc] initWithObjects: newgamevs, nil];
 }
 
 - (void) makeGame {
@@ -202,12 +167,12 @@
     {
         [relation addObject: user];
     }
-    NSMutableArray *targets = [[NSMutableArray alloc] initWithArray:self.gameUsers];
     
+    // Setting the targets to be randomly distributed
+    NSMutableArray *targets = [[NSMutableArray alloc] initWithArray:self.gameUsers];
     NSUInteger count = [targets count];
     NSMutableDictionary *targetsdict = [[NSMutableDictionary alloc] init];
     for (NSUInteger i = 0; i < count; ++i) {
-        // Select a random element between i and end of array to swap with.
         int n;
         do
         {
@@ -217,6 +182,7 @@
     }
     [newGame setObject:targetsdict forKey:@"targets"];
     
+    // Save the game
     [newGame saveInBackground];
 }
 
