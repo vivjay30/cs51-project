@@ -25,12 +25,19 @@
     return self;
 }
 
-
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.tabBarController.tabBar setHidden:NO];
+    
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.tabBarController.tabBar setHidden:NO];
     [self updateGames];
+    UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(goBackToPicture:)];
+    self.navigationItem.leftBarButtonItem = logoutButton;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -80,8 +87,6 @@
             PFObject *photoTag = [PFObject objectWithClassName:@"PhotoTag"];
             [photoTag setObject:imageFile forKey:@"imageFile"];
             
-            // Set the access control list to current user for security purposes
-            photoTag.ACL = [PFACL ACLWithUser:[PFUser currentUser]];
             
             PFUser *user = [PFUser currentUser];
             [photoTag setObject:user forKey:@"Taker"];
@@ -120,5 +125,10 @@
         [self.targetsArray addObject:target];
     }
     [self.tableView reloadData];
+}
+- (IBAction)goBackToPicture:(id)sender{
+    [self.tabBarController.tabBar setHidden:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
 }
 @end

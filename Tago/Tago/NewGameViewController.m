@@ -34,9 +34,18 @@
     self.navigationItem.rightBarButtonItem = startGame;
     UIBarButtonItem *suggestionsButton = [[UIBarButtonItem alloc] initWithTitle:@"Suggestions" style:UIBarButtonItemStyleBordered target:self action:@selector(goToSuggestions:)];
     self.navigationItem.LeftBarButtonItem = suggestionsButton;
+    self.gameNameText = [[UITextField alloc] initWithFrame:CGRectMake(14, 13, 280, 21)];
+    self.gameNameText.textAlignment = NSTextAlignmentLeft;
+    self.gameNameText.text = [NSString stringWithFormat:@"%@'s game", [PFUser currentUser][@"name"]];
 
     
     [self getFriends];
+    
+    //UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+     //                              initWithTarget:self
+       //                            action:@selector(dismissKeyboard)];
+    
+    //[self.view addGestureRecognizer:tap];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -55,15 +64,42 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (section == 0)
+    {
+        return 1;
+    }
+    
+    else if (section == 1)
+    {
+        
+        return 1;
+    }
     // Return the number of rows in the section.
-    return self.FacebookUsers.count;
+    else
+    {
+        return self.FacebookUsers.count;
+    }
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if (section == 0)
+    {
+        return @"Choose Game Name";
+    }
+    else if (section == 1)
+    {
+        return @"Choose Game Duration";
+    }
+    else
+    {
+        return @"Choose Friends";
+    }
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -75,9 +111,14 @@
                 initWithStyle:UITableViewCellStyleDefault
                 reuseIdentifier:@"cell"];
     }
-    
-    cell.textLabel.text = [self.FacebookUsers objectAtIndex:[indexPath row]][@"name"];
-    
+    if ([indexPath section] == 0)
+    {
+        [cell.contentView addSubview:self.gameNameText];
+    }
+    if ([indexPath section] == 2){
+        cell.textLabel.text = [self.FacebookUsers objectAtIndex:[indexPath row]][@"name"];
+    }
+    self.gameNameText.delegate = self;
     return cell;
 }
 
@@ -130,7 +171,7 @@
     // Getting the users that were selected
     self.gameUsers = [[NSMutableArray alloc] init];
     for (int i=0; i<[self.FacebookUsers count]; i++) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:2];
         UITableViewCell *aCell = (UITableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
         if (aCell.accessoryType == UITableViewCellAccessoryCheckmark) {
             [self.gameUsers addObject:self.FacebookUsers[i]];
@@ -157,7 +198,7 @@
 - (void) makeGame {
     PFObject *newGame = [PFObject objectWithClassName:@"Game"];
     [newGame setObject:[PFUser currentUser] forKey:@"creator"];
-    NSString *gamename = [NSString stringWithFormat:@"%@'s game", [PFUser currentUser][@"name"]];
+    NSString *gamename = self.gameNameText.text;
 
     [newGame setObject:gamename forKey:@"GameName"];
     [newGame setObject:[NSNumber numberWithBool:NO] forKey:@"completed"];
@@ -185,7 +226,13 @@
     // Save the game
     [newGame saveInBackground];
 }
-
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
+}
+//-(void)dismissKeyboard {
+  //  [self.gameNameText resignFirstResponder];
+//}
 - (void) goToSuggestions: (id)sender {
     
     self.gameUsers = [[NSMutableArray alloc] init];

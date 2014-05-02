@@ -11,4 +11,5 @@
 @interface HomePageViewController : UITableViewController
 @property NSMutableArray *gamesArray;
 - (void) updateGames;
+- (void)logoutButtonTouchHandler:(id)sender;
 @end

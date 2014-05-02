@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewGameViewController : UITableViewController
+@interface NewGameViewController : UITableViewController <UITextFieldDelegate>
 
 @property NSMutableArray *FacebookUsers;
 
@@ -16,6 +16,7 @@
 
 @property NSArray *suggestedUsers;
 
+@property UITextField *gameNameText;
 - (void) makeGame;
 - (void) goToSuggestions: (id)sender;
 @end

@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ImagePickerViewController.h"
 
 @interface TakenPictureViewController : UITableViewController
 @property NSMutableArray *gamesArray;
 @property NSMutableArray *targetsArray;
+@property ImagePickerViewController *imagePicker;
 @property NSData *picture;
 - (void) updateGames;
 - (void) updateTargets;
+- (IBAction)goBackToPicture:(id)sender;
 
 @end

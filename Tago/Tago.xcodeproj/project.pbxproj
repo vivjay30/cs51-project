@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E2136AB0191063FC0095D07F /* PictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2136AAF191063FC0095D07F /* PictureViewController.m */; };
 		E2136AB31910787A0095D07F /* GamePage.m in Sources */ = {isa = PBXBuildFile; fileRef = E2136AB21910787A0095D07F /* GamePage.m */; };
 		E2136AB61911D0E50095D07F /* TakenPictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2136AB51911D0E50095D07F /* TakenPictureViewController.m */; };
 		E2136AB91911D25C0095D07F /* CellTakenPicture.m in Sources */ = {isa = PBXBuildFile; fileRef = E2136AB81911D25C0095D07F /* CellTakenPicture.m */; };
@@ -50,8 +49,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E2136AAE191063FC0095D07F /* PictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureViewController.h; sourceTree = "<group>"; };
-		E2136AAF191063FC0095D07F /* PictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureViewController.m; sourceTree = "<group>"; };
 		E2136AB11910787A0095D07F /* GamePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePage.h; sourceTree = "<group>"; };
 		E2136AB21910787A0095D07F /* GamePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GamePage.m; sourceTree = "<group>"; };
 		E2136AB41911D0E50095D07F /* TakenPictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TakenPictureViewController.h; sourceTree = "<group>"; };
@@ -127,6 +124,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E2136AC419122FE50095D07F /* Tab 0 (Game Page) */ = {
+			isa = PBXGroup;
+			children = (
+				E2B8A8221905B72100082933 /* HomePageViewController.h */,
+				E2B8A8231905B72200082933 /* HomePageViewController.m */,
+				E2136AB11910787A0095D07F /* GamePage.h */,
+				E2136AB21910787A0095D07F /* GamePage.m */,
+			);
+			name = "Tab 0 (Game Page)";
+			sourceTree = "<group>";
+		};
+		E2136AC5191230090095D07F /* Tab 1 (New Game) */ = {
+			isa = PBXGroup;
+			children = (
+				E227C99A1909986300BA0E85 /* NewGameViewController.h */,
+				E227C99B1909986300BA0E85 /* NewGameViewController.m */,
+				E227C99D190A1CDE00BA0E85 /* SuggestionsViewController.h */,
+				E227C99E190A1CDE00BA0E85 /* SuggestionsViewController.m */,
+			);
+			name = "Tab 1 (New Game)";
+			sourceTree = "<group>";
+		};
 		E2B8A7CF1905A65D00082933 = {
 			isa = PBXGroup;
 			children = (
@@ -167,27 +186,14 @@
 		E2B8A7E11905A65D00082933 /* Tago */ = {
 			isa = PBXGroup;
 			children = (
+				E2136AC419122FE50095D07F /* Tab 0 (Game Page) */,
+				E2136AC5191230090095D07F /* Tab 1 (New Game) */,
+				E2FD91241912F1CC002ED8BB /* Tab 2 (Taking Pictures) */,
 				E2B8A7EA1905A65D00082933 /* AppDelegate.h */,
 				E2B8A7EB1905A65D00082933 /* AppDelegate.m */,
 				E2B8A7ED1905A65D00082933 /* Main.storyboard */,
-				E2136AB71911D25C0095D07F /* CellTakenPicture.h */,
-				E2136AB81911D25C0095D07F /* CellTakenPicture.m */,
-				E2136AB11910787A0095D07F /* GamePage.h */,
-				E2136AB21910787A0095D07F /* GamePage.m */,
-				E2B8A8221905B72100082933 /* HomePageViewController.h */,
-				E2B8A8231905B72200082933 /* HomePageViewController.m */,
-				E2136AAE191063FC0095D07F /* PictureViewController.h */,
-				E2136AAF191063FC0095D07F /* PictureViewController.m */,
-				E2136ABD19121E030095D07F /* ImagePickerViewController.h */,
-				E2136ABE19121E030095D07F /* ImagePickerViewController.m */,
 				E2136AC01912235F0095D07F /* TabBarController.h */,
 				E2136AC11912235F0095D07F /* TabBarController.m */,
-				E2136AB41911D0E50095D07F /* TakenPictureViewController.h */,
-				E2136AB51911D0E50095D07F /* TakenPictureViewController.m */,
-				E227C99D190A1CDE00BA0E85 /* SuggestionsViewController.h */,
-				E227C99E190A1CDE00BA0E85 /* SuggestionsViewController.m */,
-				E227C99A1909986300BA0E85 /* NewGameViewController.h */,
-				E227C99B1909986300BA0E85 /* NewGameViewController.m */,
 				E2B8A7F01905A65D00082933 /* LoginViewController.h */,
 				E2B8A7F11905A65D00082933 /* LoginViewController.m */,
 				E2B8A7F61905A65D00082933 /* Images.xcassets */,
@@ -223,6 +229,19 @@
 				E2B8A8061905A65D00082933 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E2FD91241912F1CC002ED8BB /* Tab 2 (Taking Pictures) */ = {
+			isa = PBXGroup;
+			children = (
+				E2136ABD19121E030095D07F /* ImagePickerViewController.h */,
+				E2136ABE19121E030095D07F /* ImagePickerViewController.m */,
+				E2136AB41911D0E50095D07F /* TakenPictureViewController.h */,
+				E2136AB51911D0E50095D07F /* TakenPictureViewController.m */,
+				E2136AB71911D25C0095D07F /* CellTakenPicture.h */,
+				E2136AB81911D25C0095D07F /* CellTakenPicture.m */,
+			);
+			name = "Tab 2 (Taking Pictures)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -326,7 +345,6 @@
 				E2B8A7EC1905A65D00082933 /* AppDelegate.m in Sources */,
 				E2B8A7F21905A65D00082933 /* LoginViewController.m in Sources */,
 				E2136ABF19121E030095D07F /* ImagePickerViewController.m in Sources */,
-				E2136AB0191063FC0095D07F /* PictureViewController.m in Sources */,
 				E2136AB31910787A0095D07F /* GamePage.m in Sources */,
 				E2B8A8241905B72200082933 /* HomePageViewController.m in Sources */,
 				E2136AB61911D0E50095D07F /* TakenPictureViewController.m in Sources */,

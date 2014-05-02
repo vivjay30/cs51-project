@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 
-@interface GamePage : UITableViewController
+@interface GamePage : UIViewController
+@property IBOutlet UITableView *tableView;
 @property PFObject *currentGame;
-@property NSArray *participants;
+@property NSMutableArray *participants;
 @property PFUser *target;
+@property NSMutableArray *scores;
 
 @end
