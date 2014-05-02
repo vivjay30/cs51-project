@@ -14,7 +14,7 @@
 
 @property NSMutableArray *gameUsers;
 
-@property NSArray *suggestedUsers;
+@property NSMutableArray *suggestedUsers;
 
 @property UITextField *gameNameText;
 - (void) makeGame;

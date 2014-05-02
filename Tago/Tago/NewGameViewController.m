@@ -323,14 +323,25 @@
                             
                         }
                     }
-                    
-                    self.suggestedUsers = [tempdict keysSortedByValueUsingComparator:^NSComparisonResult(id obj1, id obj2) { return [obj2 compare:obj1];
-                }];
-                    
+                    NSArray *temparray = [tempdict keysSortedByValueUsingComparator:^NSComparisonResult(id obj1, id obj2) { return [obj2 compare:obj1];
+                    }];
+                    for (NSString *uniqueid in temparray) {
+                        PFQuery *queryid = [PFQuery queryWithClassName:@"User"];
+                        [queryid getObjectInBackgroundWithId:uniqueid block:^(PFObject *userstore, NSError *storingerror) {
+                            if (storingerror) {
+                                NSLog(@"Error: %@ %@", storingerror, [storingerror userInfo]);
+                            }
+                            else {
+                                [self.suggestedUsers addObject:userstore];
+                            }
+                        }];
+                        
+                    }
                     
                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                     SuggestionsViewController *suggestionsPage = [storyboard instantiateViewControllerWithIdentifier:@"SuggestionsPage"];
                     suggestionsPage.suggestedUsers = self.suggestedUsers;
+                    
                     [self.navigationController pushViewController:suggestionsPage animated:YES];
 
                 }];
