@@ -17,6 +17,6 @@
 - (void) updateGames;
 - (void) updateTargets;
 - (IBAction)goBackToPicture:(id)sender;
-- (void) saveGame: (NSIndexPath *) indexPath;
+- (void) savePhoto: (NSIndexPath *) indexPath;
 
 @end

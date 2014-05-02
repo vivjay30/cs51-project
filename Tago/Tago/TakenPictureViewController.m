@@ -79,8 +79,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self saveGame:indexPath];
+    [self savePhoto:indexPath];
 }
+
 - (void) updateGames {
     PFQuery *query = [PFQuery queryWithClassName:@"Game"];
     [query whereKey:@"participants" equalTo:[PFUser currentUser]];
@@ -90,6 +91,7 @@
         [self updateTargets];
     }];
 }
+
 - (void) updateTargets {
     self.targetsArray = [[NSMutableArray alloc] init];
     for (PFObject *game in self.gamesArray){
@@ -99,12 +101,14 @@
     }
     [self.tableView reloadData];
 }
+
 - (IBAction)goBackToPicture:(id)sender{
     [self.tabBarController.tabBar setHidden:YES];
     [self.navigationController popToRootViewControllerAnimated:YES];
     
 }
-- (void) saveGame: (NSIndexPath *) indexPath{
+
+- (void) savePhoto: (NSIndexPath *) indexPath{
     // Resize image
     UIGraphicsBeginImageContext(CGSizeMake(640, 960));
     [self.picture drawInRect: CGRectMake(0, 0, 640, 960)];
@@ -159,4 +163,5 @@
     [self.tabBarController setSelectedIndex:0];
     [self.tabBarController.tabBar setHidden:NO];
 }
+
 @end

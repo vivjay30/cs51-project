@@ -29,8 +29,6 @@
     [[self currentGame] refresh];
     // Do any additional setup after loading the view.
     self.navigationItem.title = self.currentGame[@"GameName"];
-    //PFRelation *RelationParts = [self currentGame][@"participants"];
-    //self.participants = [RelationParts.query findObjects];
     
     PFQuery *query = [PFUser query];
     [query whereKey:@"objectId" equalTo:[[self currentGame][@"targets"] objectForKey:[PFUser currentUser].objectId]];
@@ -82,7 +80,7 @@
     }
     if ([indexPath section] == 1)
     {
-        cell.textLabel.text = self.participants[[indexPath row]][@"name"];
+        cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", self.participants[[indexPath row]][@"name"], self.scores[[indexPath row]]];
     }
     else if ([indexPath section] == 0)
     {
@@ -92,22 +90,21 @@
     return cell;
 }
 
+
+// Our algorithm using pagerank to get the sorted list of users
 - (void) updateRankings: (PFObject *)game;
 {
-    PFRelation *relation = [self.currentGame relationforKey:@"participants"];
-    PFQuery *query = [relation query];
-    self.participants = [query findObjects];
-    [self.tableView reloadData];
-    
-    /*//we can make more complex if needed
-    int i = 100;
+    //we can make more complex if needed
+    int i = 4;
     double d = 0.85;
     //Initialize an empty mutable array
     //Query Parse for all phototags associated with this specific game game - put in array
+    self.participants = [[NSMutableArray alloc] init];
+    self.scores = [[NSMutableArray alloc] init];
     
     PFQuery *query = [PFQuery queryWithClassName:@"PhotoTag"];
     
-    [query whereKey:@"game" equalTo:game];
+    [query whereKey:@"Game" equalTo:game];
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *tags, NSError *tagerror)    {
         if (tagerror) {
@@ -123,7 +120,7 @@
                     NSLog(@"Error: %@ %@", parterror, [parterror userInfo]);
                 }
                 else {
-                    //Query game for participants array - find count of array (N)
+                    //Query game for participants array - find couqnt of array (N)
                     int n = [participants count];
                     //Initialize an empty mutable dict opg
                     NSMutableDictionary *opg = [[NSMutableDictionary alloc] init];
@@ -134,18 +131,12 @@
                         [opg setObject:[NSNumber numberWithDouble:((double)1/(double)n)] forKey:user.objectId];
                         PFQuery *queryuser = [PFQuery queryWithClassName:@"PhotoTag"];
                         
-                        [queryuser whereKey:@"game" equalTo:game];
+                        [queryuser whereKey:@"Game" equalTo:game];
                         [queryuser whereKey:@"PictureOf" equalTo:user];
-                        [queryuser findObjectsInBackgroundWithBlock:^(NSArray *taggeenumber, NSError *taggeeerror) {
-                            if (taggeeerror) {
-                                NSLog(@"Error: %@ %@", taggeeerror, [taggeeerror userInfo]);
-                            }
-                            else {
-                                if ([taggeenumber count] == 0) {
-                                    [notags addObject:user];
-                                }
-                            }
-                        }];
+                        PFObject *tagNumber = [queryuser getFirstObject];
+                        if (tagNumber == nil) {
+                            [notags addObject:user];
+                        }
                     }
                     for (int j = 0; j < i; j++) {
                         double dp = 0;
@@ -157,27 +148,20 @@
                             
                             [npg setObject:[NSNumber numberWithDouble:(dp + ((double)1 - d)/n)] forKey:alluser.objectId];
                             PFQuery *queryin = [PFQuery queryWithClassName:@"PhotoTag"];
-                            [queryin whereKey:@"game" equalTo:game];
+                            [queryin whereKey:@"Game" equalTo:game];
                             [queryin whereKey:@"Taker" equalTo:alluser];
-                            [queryin findObjectsInBackgroundWithBlock:^(NSArray *taggerin, NSError *taggererror) {
-                                for (PFObject *usertagged in taggerin) {
-                                    PFQuery *querytaggedtaggee = [PFQuery queryWithClassName:@"PhotoTag"];
-                                    [querytaggedtaggee whereKey:@"game" equalTo:game];
-                                    [querytaggedtaggee whereKey:@"PictureOf" equalTo:usertagged[@"PictureOf"]];
-                                    [querytaggedtaggee findObjectsInBackgroundWithBlock:^(NSArray *taggeetagger, NSError *taggeetaggererror) {
-                                        if (taggeetaggererror) {
-                                            NSLog(@"Error: %@ %@", taggeetaggererror, [taggeetaggererror userInfo]);
-                                        }
-                                        else {
-                                            double oldvaluetaggee = [[opg objectForKey:usertagged[@"PictureOf"]] doubleValue];
-                                            double npgvalue = [[npg objectForKey:alluser.objectId] doubleValue];
-                                            double newvalue = npgvalue + (d * oldvaluetaggee / (double) [taggeetagger count]);
-                                            
-                                            [npg setObject:[NSNumber numberWithDouble:newvalue] forKey:alluser.objectId];
-                                        }
-                                    }];
-                                }
-                            }];
+                            NSArray *taggerin = [queryin findObjects]; //taggerin: array of tags by user
+                            for (PFObject *usertagged in taggerin) {    // for each tag by user...
+                                PFQuery *querytaggedtaggee = [PFQuery queryWithClassName:@"PhotoTag"];
+                                [querytaggedtaggee whereKey:@"Game" equalTo:game];
+                                [querytaggedtaggee whereKey:@"PictureOf" equalTo:usertagged[@"PictureOf"]];
+                                NSArray *taggeetagger = [querytaggedtaggee findObjects]; // taggeetagger: array of tags by person user tagged
+                                PFUser *dude = usertagged[@"PictureOf"]; // the person tagged
+                                double oldvaluetaggee = [[opg objectForKey:dude.objectId] doubleValue];
+                                double npgvalue = [[npg objectForKey:alluser.objectId] doubleValue];
+                                double newvalue = npgvalue + (d * oldvaluetaggee / (double) [taggeetagger count]);
+                                [npg setObject:[NSNumber numberWithDouble:newvalue] forKey:alluser.objectId];
+                            }
                         }
                         opg = [npg mutableCopy];
                     }
@@ -185,26 +169,17 @@
                         return [obj2 compare:obj1];
                     }];
                     for (NSString *uniqueuser in userIdRankings) {
-                        PFQuery *queryrankuser = [PFQuery queryWithClassName:@"User"];
-                        [queryrankuser getObjectInBackgroundWithId:uniqueuser block:^(PFObject *usertostore, NSError *storeerror) {
-                            if (storeerror) {
-                                NSLog(@"Error: %@ %@", storeerror, [storeerror userInfo]);
-                            }
-                            else {
-                                [self.participants addObject:usertostore];
-                                // Stores an array of NSNumbers
-                                [self.scores addObject:[opg objectForKey:uniqueuser]];
-                                [self.tableView reloadData];
-                                
-                            }
-                        }];
                         
+                        PFQuery *queryrankuser = [PFUser query];
+                        PFObject *usertostore = [queryrankuser getObjectWithId:uniqueuser];
+                        [self.participants addObject:usertostore];
+                        [self.scores addObject:[opg objectForKey:uniqueuser]];
                     }
-                    
+                    [self.tableView reloadData];
                 }
             }];
         }
-    }];*/
+    }];
 }
 
 

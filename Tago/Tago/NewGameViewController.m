@@ -255,6 +255,8 @@
     }
     return NO;
 }
+
+// Our algorithm to get suggested users for the game based on the current selection
 - (void) goToSuggestions: (id)sender {
     self.suggestedUsers = [[NSMutableArray alloc] init];
     self.gameUsers = [[NSMutableArray alloc] init];

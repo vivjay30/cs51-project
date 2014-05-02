@@ -23,9 +23,9 @@
     }
     return self;
 }
+
 - (void)viewDidAppear:(BOOL)animated{
     UIViewController *vc = self.visibleViewController;
-    NSLog(NSStringFromClass([vc class]));
     if ([NSStringFromClass([vc class]) isEqualToString:@"PLUICameraViewController"]){
         
         [self.tabBarController.tabBar setHidden:YES];}
