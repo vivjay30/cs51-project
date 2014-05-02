@@ -42,19 +42,10 @@
     // Access the uncropped image from info dictionary
     self.myimage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     
-    // Resize image
-    UIGraphicsBeginImageContext(CGSizeMake(640, 960));
-    [self.myimage drawInRect: CGRectMake(0, 0, 640, 960)];
-    UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    // Upload image
-    NSData *imageData = UIImageJPEGRepresentation(self.myimage, 0.05f);
-    
     // Transition to the next page
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     TakenPictureViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"TakenPicture"];
-    vc.picture =  imageData;
+    vc.picture =  self.myimage;
     [picker pushViewController:vc animated:YES];
     
 }

@@ -13,10 +13,10 @@
 @property NSMutableArray *gamesArray;
 @property NSMutableArray *targetsArray;
 @property ImagePickerViewController *imagePicker;
-@property NSData *picture;
+@property UIImage *picture;
 - (void) updateGames;
 - (void) updateTargets;
 - (IBAction)goBackToPicture:(id)sender;
-- (void) saveGame;
+- (void) saveGame: (NSIndexPath *) indexPath;
 
 @end

@@ -81,6 +81,7 @@
                     <navigationItem key="navigationItem" id="IvR-8j-d0O"/>
                     <connections>
                         <outlet property="tableView" destination="jmM-0j-l8F" id="ha9-sa-wGj"/>
+                        <segue destination="zQl-at-nWU" kind="push" id="d9m-Ab-UXd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gKp-Lp-BIf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -97,7 +98,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="oCu-Ai-j77">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oCu-Ai-j77" id="eqF-N7-PbG">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -171,13 +172,13 @@
         <scene sceneID="tqm-ju-xEr">
             <objects>
                 <tableViewController storyboardIdentifier="SuggestionsPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bDM-gH-7RQ" customClass="SuggestionsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="kDH-Lh-QTb">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="kDH-Lh-QTb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="c5z-ZH-G6W">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="119" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c5z-ZH-G6W" id="Mwd-A1-iYd">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>

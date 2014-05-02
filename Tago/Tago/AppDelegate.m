@@ -26,6 +26,8 @@
     // Your Facebook application id is configured in Info.plist.
     // ****************************************************************************
     [PFFacebookUtils initializeFacebook];
+    
+    // Assign tab bar item with titles
 
     return YES;
 }

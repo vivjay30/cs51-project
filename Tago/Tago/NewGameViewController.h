@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
 
-@interface NewGameViewController : UITableViewController <UITextFieldDelegate>
+@interface NewGameViewController : UITableViewController <UITextFieldDelegate, UIAlertViewDelegate>
 
 @property NSMutableArray *FacebookUsers;
 
@@ -19,4 +20,5 @@
 @property UITextField *gameNameText;
 - (void) makeGame;
 - (void) goToSuggestions: (id)sender;
+- (BOOL) UserinArray: (PFUser *) myuser : (NSArray *) myArray;
 @end

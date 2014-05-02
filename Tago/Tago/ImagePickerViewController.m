@@ -35,9 +35,16 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    self.sourceType = UIImagePickerControllerSourceTypeCamera;
-    self.delegate = self.tabBarController;
+    if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera])
+    {
+        self.sourceType = UIImagePickerControllerSourceTypeCamera;
+        self.delegate = self.tabBarController;
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Announcement" message: @"Your device has no camera." delegate: nil cancelButtonTitle:@"OK" otherButtonTitles:nil]; [alert show];
+
+    }
 }
 
 - (void)didReceiveMemoryWarning

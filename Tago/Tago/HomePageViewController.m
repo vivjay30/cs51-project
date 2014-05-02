@@ -20,6 +20,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+  //  UITabBarController *tabBarController = self.tabBarController;
+   // UITabBar *tabBar = tabBarController.tabBar;
+    
+    UITabBarItem *tabBarItem1 = [self.tabBarController.tabBar.items objectAtIndex:0];
+    UITabBarItem *tabBarItem2 = [self.tabBarController.tabBar.items objectAtIndex:1];
+    UITabBarItem *tabBarItem3 = [self.tabBarController.tabBar.items objectAtIndex:2];
+
+    
+    tabBarItem1.title = @"Home";
+    tabBarItem2.title = @"New Game";
+    tabBarItem3.title = @"Tag";
     // Do any additional setup after loading the view.
     UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logoutButtonTouchHandler:)];
     self.navigationItem.leftBarButtonItem = logoutButton;
@@ -39,8 +50,6 @@
 {
     return self.gamesArray.count;
 }
-
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -64,6 +73,13 @@
     newGamePage.currentGame = [self gamesArray][[indexPath row]];
     [self.navigationController pushViewController:newGamePage animated:YES];
 }
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 0){
+        return @"Curent Games";
+    }
+    else
+        return @"blah";
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -78,16 +94,7 @@
     // Return to login view controller
     [self dismissViewControllerAnimated:NO completion:nil];
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 - (void) updateGames {
     PFQuery *query = [PFQuery queryWithClassName:@"Game"];
     [query whereKey:@"participants" equalTo:[PFUser currentUser]];

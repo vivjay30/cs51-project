@@ -26,6 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[self currentGame] refresh];
     // Do any additional setup after loading the view.
     self.navigationItem.title = self.currentGame[@"GameName"];
     //PFRelation *RelationParts = [self currentGame][@"participants"];
@@ -93,7 +94,12 @@
 
 - (void) updateRankings: (PFObject *)game;
 {
-    //we can make more complex if needed
+    PFRelation *relation = [self.currentGame relationforKey:@"participants"];
+    PFQuery *query = [relation query];
+    self.participants = [query findObjects];
+    [self.tableView reloadData];
+    
+    /*//we can make more complex if needed
     int i = 100;
     double d = 0.85;
     //Initialize an empty mutable array
@@ -198,7 +204,7 @@
                 }
             }];
         }
-    }];
+    }];*/
 }
 
 

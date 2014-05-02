@@ -79,34 +79,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    PFFile *imageFile = [PFFile fileWithName:@"Image.jpg" data:self.picture];
-    [imageFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (!error) {
-            
-            // Create a PFObject around a PFFile and associate it with the current user
-            PFObject *photoTag = [PFObject objectWithClassName:@"PhotoTag"];
-            [photoTag setObject:imageFile forKey:@"imageFile"];
-            
-            
-            PFUser *user = [PFUser currentUser];
-            [photoTag setObject:user forKey:@"Taker"];
-            
-            [photoTag setObject:[self.targetsArray objectAtIndex:[indexPath row]] forKey:@"PictureOf"];
-            [photoTag setObject:[self.gamesArray objectAtIndex:[indexPath row]] forKey:@"Game"];
-            
-            [photoTag saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (error) {
-                    // Log details of the failure
-                    NSLog(@"Error: %@ %@", error, [error userInfo]);
-                }
-            }];
-        }
-        else{
-            // Log details of the failure
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
-        }
-    }];
-    
+    [self saveGame:indexPath];
 }
 - (void) updateGames {
     PFQuery *query = [PFQuery queryWithClassName:@"Game"];
@@ -130,5 +103,60 @@
     [self.tabBarController.tabBar setHidden:YES];
     [self.navigationController popToRootViewControllerAnimated:YES];
     
+}
+- (void) saveGame: (NSIndexPath *) indexPath{
+    // Resize image
+    UIGraphicsBeginImageContext(CGSizeMake(640, 960));
+    [self.picture drawInRect: CGRectMake(0, 0, 640, 960)];
+    UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    PFObject *currentGame = [self.gamesArray objectAtIndex:[indexPath row]];
+    PFUser *previousTarget = [self.targetsArray objectAtIndex:[indexPath row]];
+    // Upload image
+    NSData *imageData = UIImageJPEGRepresentation(self.picture, 0.05f);
+    PFFile *imageFile = [PFFile fileWithName:@"Image.jpg" data:imageData];
+    [imageFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            
+            // Create a PFObject around a PFFile and associate it with the current user
+            PFObject *photoTag = [PFObject objectWithClassName:@"PhotoTag"];
+            [photoTag setObject:imageFile forKey:@"imageFile"];
+            
+            
+            PFUser *user = [PFUser currentUser];
+            [photoTag setObject:user forKey:@"Taker"];
+            
+            [photoTag setObject: previousTarget forKey:@"PictureOf"];
+            [photoTag setObject:currentGame forKey:@"Game"];
+            
+            [photoTag saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (error) {
+                    // Log details of the failure
+                    NSLog(@"Error: %@ %@", error, [error userInfo]);
+                }
+            }];
+        }
+        else{
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+    
+    PFRelation *relation = [currentGame relationforKey:@"participants"];
+    PFQuery *query = [relation query];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *participants, NSError *error){
+        NSMutableDictionary *targetsdict = currentGame[@"targets"];
+        int n;
+        do
+        {
+            n = arc4random() % participants.count;
+        }while ((participants.count == 2 && [((PFUser *)participants[n]).objectId isEqualToString:previousTarget.objectId]) || [((PFUser *)participants[n]).objectId isEqualToString: [PFUser currentUser].objectId]);
+        
+        [targetsdict setObject:((PFUser *)participants[n]).objectId forKey:[PFUser currentUser].objectId];
+    }];
+    [self goBackToPicture:self];
+    [self.tabBarController setSelectedIndex:0];
+    [self.tabBarController.tabBar setHidden:NO];
 }
 @end
