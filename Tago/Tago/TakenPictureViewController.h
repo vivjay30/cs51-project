@@ -17,5 +17,6 @@
 - (void) updateGames;
 - (void) updateTargets;
 - (IBAction)goBackToPicture:(id)sender;
+- (void) saveGame;
 
 @end

@@ -41,6 +41,14 @@
     
     [self getFriends];
     
+    NSString *hey = @"hey";
+    NSString *hey2 = @"hey";
+    NSSet * heySet = [[NSSet alloc] initWithObjects:hey, nil];
+    NSSet *heyset2 = [[NSSet alloc] initWithObjects:hey2, nil];
+    [heySet intersectsSet:heyset2];
+    NSLog(@"%i", heySet.count);
+    
+    
     //UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
      //                              initWithTarget:self
        //                            action:@selector(dismissKeyboard)];
@@ -234,10 +242,10 @@
   //  [self.gameNameText resignFirstResponder];
 //}
 - (void) goToSuggestions: (id)sender {
-    
+    self.suggestedUsers = [[NSMutableArray alloc] init];
     self.gameUsers = [[NSMutableArray alloc] init];
     for (int i=0; i<[self.FacebookUsers count]; i++) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:2];
         UITableViewCell *aCell = (UITableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
         if (aCell.accessoryType == UITableViewCellAccessoryCheckmark) {
             [self.gameUsers addObject:self.FacebookUsers[i]];
@@ -284,17 +292,19 @@
                         for (PFUser *founduser in foundusers)
                             
                         {
-                            if ((founduser.objectId != [PFUser currentUser].objectId) && ([self.gameUsers indexOfObject:founduser] == NSNotFound) && ([tempdict objectForKey:founduser.objectId] == nil)) {
+                            if (![founduser.objectId isEqualToString:[PFUser currentUser].objectId] && ([self.gameUsers indexOfObject:founduser] == NSNotFound) && ([tempdict objectForKey:founduser.objectId] == nil)) {
                                 [tempdict setObject:[NSNumber numberWithDouble:0] forKey:founduser.objectId];
                                 
                             }
                       
                             double ir = 0;
-      
-                            if (foundgame[@"creator"] == [PFUser currentUser])
+                            NSLog(((PFUser *)foundgame[@"creator"]).objectId);
+                           // NSLog(foundgame[@"creator"][@"name"]);
+                            NSLog ([PFUser currentUser].objectId);
+                            if ([((PFUser *)foundgame[@"creator"]).objectId isEqualToString:[PFUser currentUser].objectId])
                             {
                                 
-                                ir = omega * pow(0.5, (double)[[NSDate date] timeIntervalSinceDate:foundgame.createdAt]);
+                                ir = omega * pow(0.5, ((double)[[NSDate date] timeIntervalSinceDate:foundgame.createdAt]/ 1000));
                                 
                             }
 
@@ -310,8 +320,19 @@
 
                             NSMutableSet *tempset = [NSMutableSet setWithArray:self.gameUsers];
                             NSMutableSet *tempset2 = [NSMutableSet setWithArray:foundusers];
+                            NSMutableArray *third = [[NSMutableArray alloc] init];
 
-                            [tempset intersectSet:(tempset2)];
+                            /*[for (PFUser * obj in self.gameUsers) {
+                                
+                                for (PFUser *)
+                                    
+                                    
+                                    [third addObject:obj];
+                                    
+                                }
+                                
+                                
+                            }*/
 
                             double toadd = ir * weight * (double)[tempset count];
  
@@ -323,10 +344,12 @@
                             
                         }
                     }
+                    
                     NSArray *temparray = [tempdict keysSortedByValueUsingComparator:^NSComparisonResult(id obj1, id obj2) { return [obj2 compare:obj1];
+                        
                     }];
                     for (NSString *uniqueid in temparray) {
-                        PFQuery *queryid = [PFQuery queryWithClassName:@"User"];
+                        PFQuery *queryid = [PFUser query];
                         [queryid getObjectInBackgroundWithId:uniqueid block:^(PFObject *userstore, NSError *storingerror) {
                             if (storingerror) {
                                 NSLog(@"Error: %@ %@", storingerror, [storingerror userInfo]);
